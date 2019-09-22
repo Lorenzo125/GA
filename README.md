@@ -1,2 +1,2 @@
-# ALGORITMI GENETICI
-
+# Algoritmi genetici
+Fit di dati sperimentali
