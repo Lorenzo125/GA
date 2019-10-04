@@ -10,9 +10,9 @@ using namespace std;
 #define ITERAZ 10//iterazioni algoritmo
 #define ITERAZ_RAND 10 //numero iterazioni dentro al random searcher
 #define TOLL  0.1 //dimensione intorno spazio di ricerca del random searcher
-#define BIN 1200 //numero bin nell'istogramma dei dati
-#define EVENTI 100000 //numero di eventi che vanno a definire l'istogramma
-
+#define BIN 1500 //numero bin nell'istogramma dei dati
+#define EVENTI 10000 //numero di eventi che vanno a definire l'istogramma
+#define noise_fraction 0.1 // frazione del rumore
 
 double r(); // numero random tra 0 a 1 nei reali
 double evaluate (struct chrom *chr); //valuta il cromosoma
@@ -39,8 +39,6 @@ TF1 f_start("f_start","exp(-1.5*x)+0.2*(x-0.6)^2",0,1); //funzione da cui ricavo
 
 TF1 f("f", "(exp([0]*x)+[1]*(x-[2])^2)*[3]",0,1); //modello funzione di fit
 
-TF1 f_gaus ("f_gaus", "TMath::Gaus(x,0,[0]*0.01)",-10,10); //l'ideale sarebbe mettere in una define lo 0.01 e il dominio tale che si adatti correttamente
-
 TH1F h("h", "Data and fit", BIN, 0, 1); //istogramma con dati
 
 TH1F h_noise("h_noise", "Data and fit with noise", BIN, 0, 1); //istogramma con valori aggiornati con rumore Gaussiano
@@ -65,7 +63,7 @@ TCanvas c1("c1", "", 1500,500); //ambiente di lavoro
 int main()
 {
   srand(time_t(NULL)); //inizializzazione
-  c1.Divide (4,1);
+  c1.Divide (3,1);
   int i,l,m;
   hbest.GetXaxis()->SetTitle("# generzione");
   c1.cd(1);
@@ -78,15 +76,13 @@ int main()
     h.Fill(value);
   };
 
-  c1.cd(4);
-  for (i=1;i<=BIN;i++){ //aggiungo termine di rumore
-    f_gaus.SetParameter(0,h.GetBinContent(i));
-    f_gaus.Draw();
-    h_noise.Fill((i-1)*(h_noise.GetBinWidth(i)),h.GetBinContent(i)+f_gaus.GetRandom());
-    //h_noise.Fill((i-1)*(h_noise.GetBinWidth(i)),h.GetBinContent(i)); //senza rumore
-    c1.Modified();
-    c1.Update();
+  for (i=1;i<=BIN; i++) {
+    double value = h.GetBinContent(i);
+    // aggiungo il rumore
+    value += gRandom->Gaus(0, noise_fraction*value);
+    h_noise.SetBinContent(i, value);
   };
+
   c1.cd(1);
   h_noise.Draw("HIST");
 
