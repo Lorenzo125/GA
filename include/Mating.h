@@ -48,10 +48,9 @@ public:
   static void CrossOver_Beta(std::vector<Chromosome>& m_chrom, int keep, int ngenes) {
       int nchrom = (m_chrom.size());
       float k=0.0;
-      //calcolo le probabilità sequenziali (da migliorare)
+      //calcolo le probabilità sequenziali
       std::vector<double> prob(keep);
-      for (int i=1;i<=keep;i++)
-      k+=i;
+      k=keep*(keep+1)/2;
       for (int i=1; i <= keep; i++)
       prob[i-1]=(keep-i+1)/k;
       for (int i=1; i < keep; i++)
