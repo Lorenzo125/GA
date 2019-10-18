@@ -6,8 +6,11 @@
 #include "TRandom.h"
 #include "Mating.h"
 #include "Mutation.h"
+#include "Hybrid.h"
 #include <iostream>
 #include <numeric>
+
+#include "TH1F.h"
 
 class Population {
 public:
@@ -26,6 +29,8 @@ public:
   void PairAndMate_Beta();
 
   void Evolve();
+
+  void Improve_Hyb(TH1F* data, TF1* model);
 
   Chromosome& operator[](size_t i) {
     return m_chrom[i];

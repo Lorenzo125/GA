@@ -27,7 +27,11 @@ public:
 
   size_t NumberOfParameters() const;
 
-  Parameter& operator[](size_t i) { 
+  double ViewParMin(size_t i);
+
+  double ViewParMax(size_t i);
+
+  Parameter& operator[](size_t i) {
     return m_par[i];
   };
 

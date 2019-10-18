@@ -30,6 +30,10 @@ public:
   /// to the genes of the chromosome
   void UpdateModel(TF1*);
 
+  double ViewGene(size_t i);
+
+  double ViewCost();
+
   double& operator[](size_t i) {
     return m_genes[i];
   };
