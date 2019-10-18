@@ -39,11 +39,12 @@ int main(int argc, char *argv[]) {
     pop.PairAndMate_Beta();
     Chi2Fit::ComputeCost(pop, data, model);
     pop.Sort();
+    pop.Improve_Hyb(data, model);
     pop.Evolve();
     pop.Sort();
     std::cout << "--- Iteration " << i+1 << std::endl;
     std::cout << pop << std::endl;
-  }
+  };
 
   delete data;
   delete model;

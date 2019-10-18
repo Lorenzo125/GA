@@ -1,5 +1,8 @@
 #include "Population.h"
 #include "Mutation.h"
+#include "Hybrid.h"
+
+#include "TH1F.h"
 #include <random>
 
 Population::Population(const Config& conf) :
@@ -41,4 +44,8 @@ void Population::Evolve() {
   // number of genes to change
   int mutat = floor(m_conf.MutationRate*m_conf.PopulationSize*m_conf.ParDomain.NumberOfParameters());
   Mutation::Elite(m_chrom, mutat, m_conf);
-}
+};
+
+void Population::Improve_Hyb(TH1F* data, TF1* model) {
+  Hybrid::Random_Hybrid(m_chrom, m_conf, data, model);
+};

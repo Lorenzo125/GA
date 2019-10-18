@@ -23,11 +23,19 @@ size_t Chromosome::Size() const {
   return m_genes.size();
 };
 
+double Chromosome::ViewGene(size_t i) {
+  return m_genes[i];
+};
+
+double Chromosome::ViewCost(){
+  return m_cost;
+};
+
 void Chromosome::Cost(double v) {
   m_cost = v;
 };
 
-void Chromosome::UpdateModel(TF1* f) { 
+void Chromosome::UpdateModel(TF1* f) {
   for (size_t i = 0; i < m_genes.size(); ++i) {
     f->SetParameter(i, m_genes[i]);
   }
