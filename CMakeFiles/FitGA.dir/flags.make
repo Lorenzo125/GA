@@ -6,5 +6,5 @@ CXX_FLAGS = -O3 -std=c++14 -O3 -DNDEBUG
 
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/home/lorenzo/Products/root/include -I"/home/lorenzo/Scrivania/FitGA++ LOR/include" 
+CXX_INCLUDES = -I/home/lorenzo/Products/root/include -I"/home/lorenzo/Scrivania/FitGA++ LOR V2.1 bug/include" 
 
