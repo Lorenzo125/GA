@@ -4,7 +4,6 @@
 #include <iostream>
 #include <vector>
 #include <random>
-#include "Population.h"
 #include "Config.h"
 #include "Chi2Fit.h"
 
@@ -12,20 +11,21 @@
 
 class Hybrid {
 public:
-  static void Random_Hybrid(std::vector<Chromosome>& m_chrom, Config& m_conf, TH1F* data, TF1* model) {
 
-    Config conf_aus = m_conf;
+  static void Improve_Hyb(Population& pop, TH1F* data, TF1* model) {
+
+    Config conf_aus = pop.Configuration();
     ParametersDomain domain_aus;
 
     //definisco un dominio di ricerca centrato nel miglior risultato
-    for (int i=0;i < m_conf.NumberOfParameters(); i++){
-      double toll = (m_conf.ParDomain.ViewParMax(i)-m_conf.ParDomain.ViewParMin(i))/10; //10 arbitrario ////aggiungere tutte le funzioni
-      double domain_inf =  m_chrom[0].ViewGene(i)-toll;
-      double domain_sup =  m_chrom[0].ViewGene(i)+toll;
-      if (domain_inf < m_conf.ParDomain.ViewParMin(i))
-      domain_inf = m_conf.ParDomain.ViewParMin(i);
-      if (domain_sup > m_conf.ParDomain.ViewParMax(i))
-      domain_sup = m_conf.ParDomain.ViewParMax(i);
+    for (int i=0;i < conf_aus.NumberOfParameters(); i++){
+      double toll = (conf_aus.ParDomain.ViewParMax(i)-conf_aus.ParDomain.ViewParMin(i))/10; //10 arbitrario ////aggiungere tutte le funzioni
+      double domain_inf =  pop.AccessChromosome(0).ViewGene(i)-toll;
+      double domain_sup =  pop.AccessChromosome(0).ViewGene(i)+toll;
+      if (domain_inf < conf_aus.ParDomain.ViewParMin(i))
+      domain_inf = conf_aus.ParDomain.ViewParMin(i);
+      if (domain_sup > conf_aus.ParDomain.ViewParMax(i))
+      domain_sup = conf_aus.ParDomain.ViewParMax(i);
       domain_aus.SetParDomain(i,"", domain_inf, domain_sup);
     };
 
@@ -38,9 +38,9 @@ public:
       pop_aus.Sort();
     };
 
-  if (m_chrom[0].ViewCost() > pop_aus.m_chrom[0].ViewCost())
-  for (int i=0;i<m_chrom.size();i++)
-  m_chrom[0].SetGene = pop_aus.m_chrom[0].ViewGene(i);
+    if (pop.AccessChromosome(0).ViewCost() > pop_aus.AccessChromosome(0).ViewCost()) {
+      pop.AccessChromosome(0) = pop_aus.AccessChromosome(0);
+    }
 
   };
 

@@ -2,7 +2,7 @@
 #define Chi2Fit_h
 
 #include "Population.h"
-#include "TH1F.h"
+//#include "TH1F.h"
 
 class Chi2Fit {
 public:

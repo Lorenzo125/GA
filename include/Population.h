@@ -6,7 +6,6 @@
 #include "TRandom.h"
 #include "Mating.h"
 #include "Mutation.h"
-#include "Hybrid.h"
 #include <iostream>
 #include <numeric>
 
@@ -30,7 +29,11 @@ public:
 
   void Evolve();
 
-  void Improve_Hyb(TH1F* data, TF1* model);
+  Config Configuration();
+
+  Chromosome& AccessChromosome(size_t i) {
+    return m_chrom[i];
+  };
 
   Chromosome& operator[](size_t i) {
     return m_chrom[i];

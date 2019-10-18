@@ -1,8 +1,8 @@
 #include <iostream>
 #include "Config.h"
-#include "Population.h"
 #include "DataGenerator.h"
 #include "Chi2Fit.h"
+#include "Hybrid.h"
 #include <algorithm>
 
 int main(int argc, char *argv[]) {
@@ -39,7 +39,7 @@ int main(int argc, char *argv[]) {
     pop.PairAndMate_Beta();
     Chi2Fit::ComputeCost(pop, data, model);
     pop.Sort();
-    pop.Improve_Hyb(data, model);
+    Hybrid::Improve_Hyb(pop, data, model);
     pop.Evolve();
     pop.Sort();
     std::cout << "--- Iteration " << i+1 << std::endl;

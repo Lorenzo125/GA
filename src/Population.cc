@@ -24,6 +24,10 @@ size_t Population::Size() const {
   return m_chrom.size();
 };
 
+Config Population::Configuration() {
+  return m_conf;
+};
+
 void Population::Sort() {
   std::sort(m_chrom.begin(), m_chrom.end());
 };
@@ -44,8 +48,4 @@ void Population::Evolve() {
   // number of genes to change
   int mutat = floor(m_conf.MutationRate*m_conf.PopulationSize*m_conf.ParDomain.NumberOfParameters());
   Mutation::Elite(m_chrom, mutat, m_conf);
-};
-
-void Population::Improve_Hyb(TH1F* data, TF1* model) {
-  Hybrid::Random_Hybrid(m_chrom, m_conf, data, model);
 };
