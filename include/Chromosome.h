@@ -14,8 +14,6 @@ public:
 
   Chromosome(const Chromosome&);
 
-  void Init(double, double);
-
   void SetGene(size_t, double);
 
   std::vector<double>& Genes() {
@@ -26,9 +24,17 @@ public:
 
   void Cost(double);
 
-  /// Set the parameters of the model according
-  /// to the genes of the chromosome
   void UpdateModel(TF1*);
+
+  double ViewGene(size_t i);
+
+  double ViewIndicator();
+
+  void UpIndicator();
+
+  void DownIndicator();
+
+  double ViewCost();
 
   double& operator[](size_t i) {
     return m_genes[i];
@@ -50,6 +56,7 @@ public:
 private:
   std::vector<double> m_genes;
   double m_cost;
+  int m_indicator = 0; //==0, non è ancora stato calcolato il costo, ==1 sì
 };
 
 #endif

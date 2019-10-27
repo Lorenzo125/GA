@@ -9,6 +9,8 @@
 #include <iostream>
 #include <numeric>
 
+#include "TH1F.h"
+
 class Population {
 public:
   Population(const Config&);
@@ -27,6 +29,12 @@ public:
 
   void Evolve();
 
+  Config Configuration();
+
+  Chromosome& AccessChromosome(size_t i) {
+    return m_chrom[i];
+  };
+
   Chromosome& operator[](size_t i) {
     return m_chrom[i];
   };
@@ -35,7 +43,7 @@ public:
     os << "--- Population ---\n";
     /*for (size_t i = 0; i < rhs.Size(); ++i) { //stampa tutta la popolazione
       os << rhs[i];
-    }*/
+    };*/
     os << rhs[0]; //stampa migliore
 
     os << "------------------\n";

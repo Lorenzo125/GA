@@ -46,33 +46,38 @@ public:
   };
 
   static void CrossOver_Beta(std::vector<Chromosome>& m_chrom, int keep, int ngenes) {
-      int nchrom = (m_chrom.size());
-      float k=0.0;
-      //calcolo le probabilità sequenziali
-      std::vector<double> prob(keep);
-      k=keep*(keep+1)/2;
-      for (int i=1; i <= keep; i++)
-      prob[i-1]=(keep-i+1)/k;
-      for (int i=1; i < keep; i++)
-      prob[i]+=prob[i-1];
 
-      // genero i figli (uno solo ad accoppiamento, cosi riesco sempre a rispettare keep, anche se mi viene dispari)
-      for (int i=0;i<(nchrom-keep);i++){
-        int ma=0, pa=0;
-        double ra1 = gRandom->Uniform(0, 1);
-        for (int u=1;u<keep;u++){ //scelgo la madre
-          if (ra1>prob [u-1] && ra1<=prob [u])
-          ma=u;
-        };
-        for (int u=1;u<keep;u++){ //scelgo il padre
-          if (ra1>prob [u-1] && ra1<=prob [u])
-          pa=u;
-        };
+    std::random_device rd;
+    std::mt19937 rng(rd());
+    std::uniform_real_distribution<double> uni(0.0,1.0);
 
-        for (int u=0;u<ngenes;u++){ //uniform crossover
-          double beta = gRandom->Uniform(0, 1);
-          m_chrom [nchrom-1-i][u]= m_chrom [ma][u] - beta*(m_chrom [ma][u] - m_chrom [pa][u]);
-        };
+    int nchrom = (m_chrom.size());
+    double k=0.0;
+    //calcolo le probabilità sequenziali (da migliorare)
+    std::vector<double> prob(keep);
+    k=keep*(keep+1)/2;
+    prob[0]=keep/k;
+    for (int i=2; i <= keep; i++)
+    prob[i-1]=(keep-i+1)/k + prob[i-2];
+
+    // genero i figli (uno solo ad accoppiamento)
+    for (int i=0;i<(nchrom-keep);i++){
+      m_chrom [nchrom-1-i].DownIndicator();
+      int ma=0, pa=0;
+      double ra1 = uni(rng);
+      for (int u=1;u<keep;u++){ //scelgo la madre
+        if (ra1>prob [u-1] && ra1<=prob [u])
+        ma=u;
+      };
+      double ra2 = uni(rng);
+      for (int u=1;u<keep;u++){ //scelgo il padre
+        if (ra2>prob [u-1] && ra2<=prob [u])
+        pa=u;
+      };
+      for (int u=0;u<ngenes;u++){ //uniform crossover
+        double beta = uni(rng);
+        m_chrom [nchrom-1-i][u]= m_chrom [ma][u] - beta*(m_chrom [ma][u] - m_chrom [pa][u]);
+      };
     };
   };
 };
