@@ -9,8 +9,8 @@ int main(int argc, char *argv[]) {
   std::cout << ">>> FitGA++" << std::endl;
 
   Config conf;
-  conf.PopulationSize = 64;
-  conf.MutationRate = 0.25;
+  conf.PopulationSize = 128;
+  conf.MutationRate = 0.2;
   conf.KeepFraction = 0.6;
 
 
@@ -20,7 +20,7 @@ int main(int argc, char *argv[]) {
 
   TF1* model = new TF1("model", "[0]*(exp([1]*x)+[2]*(x-[3])^2)", 0, 1);
   ParametersDomain domain(model->GetNumberFreeParameters());
-  domain.SetParDomain(0, "p0", 1, 500);
+  domain.SetParDomain(0, "p0", 1, 1000);
   domain.SetParDomain(1, "p1", -2.25, -0.75);
   domain.SetParDomain(2, "p2", 0.1, 0.3);
   domain.SetParDomain(3, "p3", 0.3, 0.9);
@@ -35,10 +35,10 @@ int main(int argc, char *argv[]) {
   std::cout << "--- Original population ---" << std::endl;
   std::cout << pop << std::endl;
 
-  for (auto i = 0; i < 200; ++i) {
+  for (auto i = 0; i < 15; ++i) {
     pop.PairAndMate_Beta();
-    //Chi2Fit::ComputeCost(pop, data, model); //non serve senza elitismo
-    //pop.Sort();
+    Chi2Fit::ComputeCost(pop, data, model); //non serve senza elitismo
+    pop.Sort(); //non serve senza elitismo
     pop.Evolve();
     Chi2Fit::ComputeCost(pop, data, model);
     pop.Sort();
