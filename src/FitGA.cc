@@ -16,7 +16,7 @@ int main(int argc, char *argv[]) {
 
   DataGenerator dg("exp(-1.5*x)+0.2*(x-0.6)^2", 0, 1);
   TH1F* data = new TH1F("data", "", 800, 0., 1.);
-  dg.FillTH1F(data, 10000);
+  dg.FillTH1F(data, 100000);
 
   TF1* model = new TF1("model", "[0]*(exp([1]*x)+[2]*(x-[3])^2)", 0, 1);
   ParametersDomain domain(model->GetNumberFreeParameters());
