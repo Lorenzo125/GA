@@ -18,7 +18,7 @@ public:
     std::uniform_int_distribution<int> uni_1(0, ngenes);
     int ra1 = uni_1(rng);
 
-    std::uniform_int_distribution<int> uni_2(0, nchrom); //0 senza elitismo
+    std::uniform_int_distribution<int> uni_2(1, nchrom); //0 senza elitismo
     int ra2 = uni_2(rng);
 
     std::uniform_real_distribution<double> uni_3(m_conf.ParDomain[ra1].min_val, m_conf.ParDomain[ra1].max_val);
