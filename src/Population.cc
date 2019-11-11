@@ -2,7 +2,7 @@
 #include "Mutation.h"
 #include "Hybrid.h"
 
-#include "TH1F.h"
+#include "TH2F.h"
 #include <random>
 
 Population::Population(const Config& conf) :
@@ -12,14 +12,14 @@ Population::Population(const Population& p) :
 m_chrom(p.m_chrom), m_conf(p.m_conf) {};
 
 void Population::Init() {
-
+  
   std::random_device rd;
   std::mt19937 rng(rd());
 
   for (size_t i = 0; i < m_chrom.size(); ++i) {
     size_t csize = m_chrom[i].Size();
     for (size_t j = 0; j < csize; ++j) {
-      std::uniform_real_distribution<double> uni(m_conf.ParDomain[j].min_val, m_conf.ParDomain[j].max_val); 
+      std::uniform_real_distribution<double> uni(m_conf.ParDomain[j].min_val, m_conf.ParDomain[j].max_val);
       m_chrom[i][j] = uni(rng);
     };
   };

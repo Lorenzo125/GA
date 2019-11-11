@@ -42,7 +42,7 @@ void Chromosome::Cost(double v) {
   m_cost = v;
 };
 
-void Chromosome::UpdateModel(TF1* f) {
+void Chromosome::UpdateModel(TF2* f) {
   for (size_t i = 0; i < m_genes.size(); ++i) {
     f->SetParameter(i, m_genes[i]);
   }
