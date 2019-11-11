@@ -9,7 +9,7 @@ public:
   double MutationRate;
   double KeepFraction;
   ParametersDomain ParDomain;
-  
+
   int NumberOfParameters() const {
     return ParDomain.NumberOfParameters();
   }

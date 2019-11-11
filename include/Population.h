@@ -9,7 +9,7 @@
 #include <iostream>
 #include <numeric>
 
-#include "TH1F.h"
+#include "TH2F.h"
 
 class Population {
 public:
@@ -42,13 +42,13 @@ public:
   friend std::ostream& operator<<(std::ostream& os, Population& rhs) {
     os << "--- Population ---\n";
     /*for (size_t i = 0; i < rhs.Size(); ++i) { //stampa tutta la popolazione
-      os << rhs[i];
-    };*/
-    os << rhs[0]; //stampa migliore
+    os << rhs[i];
+  };*/
+  os << rhs[0]; //stampa migliore
 
-    os << "------------------\n";
-    return os;
-  };
+  os << "------------------\n";
+  return os;
+};
 
 private:
   std::vector<Chromosome> m_chrom;

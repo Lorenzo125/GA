@@ -45,7 +45,7 @@ public:
     }
   };
 
-  static void CrossOver_Beta(std::vector<Chromosome>& m_chrom, int keep, int ngenes) {
+  static void CrossOver_Beta(std::vector<Chromosome>& m_chrom, int keep, int ngenes) { //uniform crossover
 
     std::random_device rd;
     std::mt19937 rng(rd());
@@ -53,7 +53,7 @@ public:
 
     int nchrom = (m_chrom.size());
     double k=0.0;
-    //calcolo le probabilità sequenziali (da migliorare)
+    //calcolo le probabilità sequenziali
     std::vector<double> prob(keep);
     k=keep*(keep+1)/2;
     prob[0]=keep/k;
@@ -74,7 +74,7 @@ public:
         if (ra2>prob [u-1] && ra2<=prob [u])
         pa=u;
       };
-      for (int u=0;u<ngenes;u++){ //uniform crossover
+      for (int u=0;u<ngenes;u++){
         double beta = uni(rng);
         m_chrom [nchrom-1-i][u]= m_chrom [ma][u] - beta*(m_chrom [ma][u] - m_chrom [pa][u]);
       };

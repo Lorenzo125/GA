@@ -1,7 +1,7 @@
 #ifndef Chromosome_h
 #define Chromosome_h
 
-#include "TF1.h"
+#include "TF2.h"
 #include <vector>
 #include <iostream>
 #include <iomanip>
@@ -24,7 +24,7 @@ public:
 
   void Cost(double);
 
-  void UpdateModel(TF1*);
+  void UpdateModel(TF2*);
 
   double ViewGene(size_t i);
 
@@ -56,7 +56,7 @@ public:
 private:
   std::vector<double> m_genes;
   double m_cost;
-  int m_indicator = 0; //==0, non è ancora stato calcolato il costo, ==1 sì
+  int m_indicator = 0; // ==0, non è ancora stato calcolato il costo, ==1 sì
 };
 
 #endif
