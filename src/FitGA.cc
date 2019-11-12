@@ -35,7 +35,7 @@ int main(int argc, char *argv[]) {
   std::cout << "--- Original population ---" << std::endl;
   std::cout << pop << std::endl;
 
-  for (auto i = 0; i < 10; ++i) {
+  for (auto i = 0; i < 15; ++i) {
     pop.PairAndMate_Beta();
     Chi2Fit::ComputeCost(pop, data, model);
     pop.Sort();
