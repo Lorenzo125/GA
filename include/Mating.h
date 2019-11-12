@@ -60,7 +60,7 @@ public:
     for (int i=2; i <= keep; i++)
     prob[i-1]=(keep-i+1)/k + prob[i-2];
 
-    // genero i figli (uno solo ad accoppiamento)
+    // genero i figli (uno solo ad accoppiamento, verrà aggiornato a 2 per velocizzare) )
     for (int i=0;i<(nchrom-keep);i++){
       m_chrom [nchrom-1-i].DownIndicator();
       int ma=0, pa=0;
