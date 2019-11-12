@@ -56,8 +56,7 @@ public:
 
     //definisco un dominio di ricerca centrato nel miglior risultato
     for (size_t i=0; i < conf_aus.NumberOfParameters(); i++){
-      double toll=0.1;
-      //toll = (conf_aus.ParDomain.ViewParMax(i)-conf_aus.ParDomain.ViewParMin(i))/10; //arbitrario
+      double toll = (conf_aus.ParDomain.ViewParMax(i)-conf_aus.ParDomain.ViewParMin(i))/10;
       double domain_inf =  pop.AccessChromosome(0).ViewGene(i)-toll;
       double domain_sup =  pop.AccessChromosome(0).ViewGene(i)+toll;
       if (domain_inf < conf_aus.ParDomain.ViewParMin(i))
