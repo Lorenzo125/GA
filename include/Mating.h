@@ -60,9 +60,10 @@ public:
     for (int i=2; i <= keep; i++)
     prob[i-1]=(keep-i+1)/k + prob[i-2];
 
-    // genero i figli (uno solo ad accoppiamento, verrà aggiornato a 2 per velocizzare)
-    for (int i=0;i<(nchrom-keep);i++){
+    // genero i figli
+    for (int i=0;i<(nchrom-keep);i=i+2){
       m_chrom [nchrom-1-i].DownIndicator();
+      m_chrom [nchrom-i].DownIndicator();
       int ma=0, pa=0;
       double ra1 = uni(rng);
       for (int u=1;u<keep;u++){ //scelgo la madre
@@ -77,6 +78,7 @@ public:
       for (int u=0;u<ngenes;u++){
         double beta = uni(rng);
         m_chrom [nchrom-1-i][u]= m_chrom [ma][u] - beta*(m_chrom [ma][u] - m_chrom [pa][u]);
+        m_chrom [nchrom-i][u]= m_chrom [pa][u] + beta*(m_chrom [ma][u] - m_chrom [pa][u]);
       };
     };
   };
