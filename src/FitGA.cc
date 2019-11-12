@@ -11,7 +11,7 @@ int main(int argc, char *argv[]) {
   Config conf;
   conf.PopulationSize = 16;
   conf.MutationRate = 0.25;
-  conf.KeepFraction = 0.6;
+  conf.KeepFraction = 0.60;
 
 
   DataGenerator dg("exp(2*x)*(3^x)*exp(4*y)", 0., 1., 0., 1.); //non serve effettivamente, ho sistemato direttamente il DataGenerator.cc
