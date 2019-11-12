@@ -15,8 +15,6 @@ public:
 
     Config conf_aus = pop.Configuration();
 
-    TF2* model_aus = model;
-
     model -> SetParLimits(0, conf_aus.ParDomain.ViewParMin(0), conf_aus.ParDomain.ViewParMax(0));
 
     //definisco un dominio di ricerca centrato nel miglior risultato
