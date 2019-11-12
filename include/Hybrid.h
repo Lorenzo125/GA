@@ -15,6 +15,8 @@ public:
 
     Config conf_aus = pop.Configuration();
 
+    TF2* model_aus = model;
+
     model -> SetParLimits(0, conf_aus.ParDomain.ViewParMin(0), conf_aus.ParDomain.ViewParMax(0));
 
     //definisco un dominio di ricerca centrato nel miglior risultato
@@ -34,7 +36,7 @@ public:
     for (int i=0;i<conf_aus.NumberOfParameters();i++){
       pop.AccessChromosome(0).SetGene(i,model -> GetParameter(i));
     };
-    pop.AccessChromosome(0).DownIndicator();
+    pop.AccessChromosome(0).Cost(model -> GetChisquare());
   };
 
 

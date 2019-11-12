@@ -28,7 +28,6 @@ public:
   };
 
   static void ComputeCost(Population& pop, TH2F* data, TF2* model) {
-    double chi2 = 0., x = 0., y = 0., e = 0.;
     for (size_t i = 0; i < pop.Size(); ++i) {
       ComputeCost(pop[i], data, model);
     }
