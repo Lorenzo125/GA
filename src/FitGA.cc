@@ -1,6 +1,5 @@
 #include <iostream>
 #include "Config.h"
-#include "DataGenerator.h"
 #include "Chi2Fit.h"
 #include "Hybrid.h"
 #include <algorithm>
@@ -11,12 +10,12 @@ int main(int argc, char *argv[]) {
   Config conf;
   conf.PopulationSize = 16;
   conf.MutationRate = 0.25;
-  conf.KeepFraction = 0.60;
+  conf.KeepFraction = 0.50;
 
 
-  DataGenerator dg("exp(2*x)*(3^x)*exp(4*y)", 0., 1., 0., 1.);  //non mi serve ai fini della generazione dei dati 
+  TF2* f = new TF2("f","exp(2*x)*(3^x)*exp(4*y)", 0., 1., 0., 1.);
   TH2F* data = new TH2F("data", "", 100, 0., 1., 100, 0., 1.);
-  dg.FillTH2F(data, 10000000);
+  data -> FillRandom("f", 10000000);
 
   TF2* model = new TF2("model","[0]*exp([1]*x)*([2]^x)*exp([3]*y)", 0., 1., 0., 1.);
   ParametersDomain domain(model->GetNumberFreeParameters());
