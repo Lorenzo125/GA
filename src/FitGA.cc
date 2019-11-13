@@ -14,7 +14,7 @@ int main(int argc, char *argv[]) {
   conf.KeepFraction = 0.60;
 
 
-  DataGenerator dg("exp(2*x)*(3^x)*exp(4*y)", 0., 1., 0., 1.); //non serve effettivamente, ho sistemato direttamente il DataGenerator.cc
+  DataGenerator dg("exp(2*x)*(3^x)*exp(4*y)", 0., 1., 0., 1.); //provvisorio, per ora non serve (devo raffinare data generator) 
   TH2F* data = new TH2F("data", "", 100, 0., 1., 100, 0., 1.);
   dg.FillTH2F(data, 10000000);
 
