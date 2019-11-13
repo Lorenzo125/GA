@@ -9,7 +9,7 @@ DataGenerator::~DataGenerator() {
   delete m_func;
 };
 
-void DataGenerator::FillTH2F(TH2F* h, size_t nevents) {
+void DataGenerator::FillTH2F(TH2F* h, size_t nevents) { //da sistemare e usare FillRandom
   TF1* f1 = new TF1("f1", "exp(2*x)*3^x", 0., 1.);
   TF1* f2 = new TF1("f2", "exp(4*x)", 0., 1.);
   for (size_t i = 0; i < nevents; ++i) {
