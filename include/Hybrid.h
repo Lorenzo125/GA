@@ -56,7 +56,7 @@ public:
 
     //definisco un dominio di ricerca centrato nel miglior risultato
 
-    domain_aus.SetParDomain(0,"", pop.AccessChromosome(0).ViewGene(0)-5, pop.AccessChromosome(0).ViewGene(0)+5); //parametro di normalizzazione non lo faccio variare
+    domain_aus.SetParDomain(0,"", pop.AccessChromosome(0).ViewGene(0)-5, pop.AccessChromosome(0).ViewGene(0)+5);
 
     for (size_t i=1; i < conf_aus.NumberOfParameters(); i++){ //per altri parametri definisco tolleranza relativa
       double toll = (conf_aus.ParDomain.ViewParMax(i)-conf_aus.ParDomain.ViewParMin(i))/10;
