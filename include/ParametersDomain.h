@@ -5,38 +5,40 @@
 #include <vector>
 
 class Parameter {
-public:
-  Parameter() {
-    name = "";
-    min_val = 0.;
-    max_val = 0.;
-  };
 
-  std::string name;
-  double min_val;
-  double max_val;
+public:
+   Parameter()
+   {
+      m_name    = "";
+      m_min_val = 0.;
+      m_max_val = 0.;
+   };
+
+   std::string m_name;
+   double      m_min_val;
+   double      m_max_val;
 };
 
 class ParametersDomain {
 public:
-  ParametersDomain();
+   ParametersDomain();
 
-  ParametersDomain(size_t);
+   ParametersDomain(size_t);
 
-  void SetParDomain(size_t, std::string, double, double);
+   void setParameterDomain(size_t, std::string, double, double);
 
-  size_t NumberOfParameters() const;
+   size_t setNumberOfParameters() const;
 
-  double ViewParMin(size_t i);
+   size_t getNumberOfParameters() const;
 
-  double ViewParMax(size_t i);
+   double getParamaterMin(size_t i);
 
-  Parameter& operator[](size_t i) {
-    return m_par[i];
-  };
+   double getParamaterMax(size_t i);
+
+   Parameter &operator[](size_t i) { return m_par[i]; };
 
 private:
-  std::vector<Parameter> m_par;
+   std::vector<Parameter> m_par;
 };
 
 #endif

@@ -4,55 +4,48 @@
 #include "Chromosome.h"
 #include "Config.h"
 #include "TRandom.h"
-#include "Mating.h"
-#include "Mutation.h"
 #include <iostream>
 #include <numeric>
 
-#include "TH2F.h"
+#include "TH1F.h"
 
 class Population {
 public:
-  Population(const Config&);
+   Population(const Config &);
 
-  Population(const Population&);
+   Population(const Population &);
 
-  void Init();
+   void init();
 
-  size_t Size() const;
+   size_t size() const;
 
-  void Sort();
+   void sort();
 
-  void PairAndMate();
+   void mutation();
 
-  void PairAndMate_Beta();
+   void crossover();
 
-  void Evolve();
+   Config getConfig();
 
-  Config Configuration();
+   Chromosome &getChromosome(size_t i) { return m_chrom[i]; };
 
-  Chromosome& AccessChromosome(size_t i) {
-    return m_chrom[i];
-  };
+   Chromosome &operator[](size_t i) { return m_chrom[i]; };
 
-  Chromosome& operator[](size_t i) {
-    return m_chrom[i];
-  };
+   friend std::ostream &operator<<(std::ostream &os, Population &rhs)
+   {
+      os << "--- Population ---\n";
+      /*for (size_t i = 0; i < rhs.Size(); ++i) { //stampa tutta la popolazione
+        os << rhs[i];
+      };*/
+      os << rhs[0]; // stampa migliore
 
-  friend std::ostream& operator<<(std::ostream& os, Population& rhs) {
-    os << "--- Population ---\n";
-  /*for (size_t i = 0; i < rhs.Size(); ++i) { //stampa tutta la popolazione
-    os << rhs[i];
-  };*/
-  os << rhs[0]; //stampa migliore
-
-  os << "------------------\n";
-  return os;
-};
+      os << "------------------\n";
+      return os;
+   };
 
 private:
-  std::vector<Chromosome> m_chrom;
-  Config m_conf;
+   std::vector<Chromosome> m_chrom;
+   Config                  m_conf;
 };
 
 #endif
