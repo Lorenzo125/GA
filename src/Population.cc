@@ -1,56 +1,91 @@
 #include "Population.h"
-#include "Mutation.h"
-#include "Hybrid.h"
 
-#include "TH2F.h"
+#include "TH1F.h"
 #include <random>
 
-Population::Population(const Config& conf) :
-m_chrom(conf.PopulationSize, conf.NumberOfParameters()), m_conf(conf) {};
+Population::Population(const Config &conf)
+   : m_chrom(conf.getPopulationSize(), conf.getNumberOfParameters()), m_conf(conf){};
 
-Population::Population(const Population& p) :
-m_chrom(p.m_chrom), m_conf(p.m_conf) {};
+Population::Population(const Population &p) : m_chrom(p.m_chrom), m_conf(p.m_conf){};
 
-void Population::Init() {
-  
-  std::random_device rd;
-  std::mt19937 rng(rd());
+void Population::init()
+{
 
-  for (size_t i = 0; i < m_chrom.size(); ++i) {
-    size_t csize = m_chrom[i].Size();
-    for (size_t j = 0; j < csize; ++j) {
-      std::uniform_real_distribution<double> uni(m_conf.ParDomain[j].min_val, m_conf.ParDomain[j].max_val);
-      m_chrom[i][j] = uni(rng);
-    };
-  };
+   std::random_device rd;
+   std::mt19937       rng(rd());
+
+   for (size_t i = 0; i < m_chrom.size(); ++i) {
+      for (size_t j = 0; j < m_conf.getNumberOfParameters(); ++j) {
+         std::uniform_real_distribution<double> uni(m_conf.getParamaterDomain().getParamaterMin(j),
+                                                    m_conf.getParamaterDomain().getParamaterMax(j));
+         m_chrom[i].setGene(j, uni(rng));
+      };
+   };
 };
 
-size_t Population::Size() const {
-  return m_chrom.size();
+size_t Population::size() const
+{
+   return m_chrom.size();
 };
 
-Config Population::Configuration() {
-  return m_conf;
+Config Population::getConfig()
+{
+   return m_conf;
 };
 
-void Population::Sort() {
-  std::sort(m_chrom.begin(), m_chrom.end());
+void Population::sort()
+{
+   std::sort(m_chrom.begin(), m_chrom.end());
 };
 
-void Population::PairAndMate() {
-  // number of chromosomes to keep
-  int keep = floor(m_conf.KeepFraction*m_conf.PopulationSize);  ///arrotonda per difetto
-  Mating::CrossOver(m_chrom, keep, m_conf.NumberOfParameters());
+void Population::crossover()
+{ // uniform crossover
+
+   std::random_device                     rd;
+   std::mt19937                           rng(rd());
+   std::uniform_real_distribution<double> uni(0.0, 1.0);
+
+   // genero i figli
+   for (int i = 0; i < (m_chrom.size() - m_conf.getKeep()); i = i + 2) {
+      m_chrom[m_chrom.size() - 1 - i].setIndicatorDown();
+      m_chrom[m_chrom.size() - 2 - i].setIndicatorDown();
+      int    ma = 0, pa = 0;
+      double ra1 = uni(rng);
+      for (int u = 1; u < m_conf.getKeep(); u++) { // scelgo la madre
+         if (ra1 > m_conf.getProb(u-1) && ra1 <= m_conf.getProb(u)) ma = u;
+      };
+      double ra2 = uni(rng);
+      for (int u = 1; u < m_conf.getKeep(); u++) { // scelgo il padre
+         if (ra2 > m_conf.getProb(u - 1) && ra2 <= m_conf.getProb(u)) pa = u;
+      };
+      for (int u = 0; u < m_conf.getNumberOfParameters(); u++) {
+         double beta = uni(rng);
+         m_chrom[m_chrom.size() - 1 - i].setGene(u, m_chrom[ma].getGene(u) -
+                                                       beta * (m_chrom[ma].getGene(u) - m_chrom[pa].getGene(u)));
+         m_chrom[m_chrom.size() - 2 - i].setGene(u, m_chrom[pa].getGene(u) +
+                                                       beta * (m_chrom[ma].getGene(u) - m_chrom[pa].getGene(u)));
+      };
+   };
 };
 
-void Population::PairAndMate_Beta() {
-  // number of chromosomes to keep
-  int keep = floor(m_conf.KeepFraction*m_conf.PopulationSize);  ///arrotonda per difetto
-  Mating::CrossOver_Beta(m_chrom, keep, m_conf.NumberOfParameters());
-};
+void Population::mutation()
+{
+   // random generator engine
+   std::random_device rd;
+   std::mt19937       rng(rd());
 
-void Population::Evolve() {
-  // number of genes to change
-  int mutat = floor(m_conf.MutationRate*m_conf.PopulationSize*m_conf.ParDomain.NumberOfParameters());
-  Mutation::Elite(m_chrom, mutat, m_conf);
+   int mutat = floor(m_conf.getMutationRate() * m_conf.getPopulationSize() * m_conf.getNumberOfParameters());
+
+   for (int i = 0; i < mutat; i++) {
+      std::uniform_int_distribution<int> uni_1(0, m_conf.getNumberOfParameters() - 1);
+      int                                ra1 = uni_1(rng);
+
+      std::uniform_int_distribution<int> uni_2(1, m_chrom.size() - 1); // con elitismo
+      int                                ra2 = uni_2(rng);
+
+      std::uniform_real_distribution<double> uni_3(m_conf.getParamaterDomain().getParamaterMin(ra1),
+                                                   m_conf.getParamaterDomain().getParamaterMax(ra1));
+      m_chrom[ra2].setGene(ra1, uni_3(rng));
+      m_chrom[ra2].setIndicatorDown();
+   };
 };
