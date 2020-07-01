@@ -42,7 +42,7 @@ public:
          os << std::setw(10) << std::right << rhs[i];
          if (i < rhs.size() - 1) os << ", ";
       }
-      os << " --> " << rhs.m_cost << "\n";
+      os << " --> " << rhs.getCost() << "\n";
       return os;
    };
 
