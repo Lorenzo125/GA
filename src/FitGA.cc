@@ -15,20 +15,21 @@ int main(int argc, char *argv[])
    std::cout << ">>> FitGA++" << std::endl;
 
    Config conf;
-   conf.setPopulationSize(20);
+   conf.setPopulationSize(500);
    conf.setMutationRate(0.10);
    conf.setKeepFraction(0.50);
    conf.setConfigCrossover();
 
-   size_t iter_max = 20; // max iterazioni in cui si può avere sempre lo stesso risultato
-   double toll     = 1e-10;
-   int    num_run  = 100;
+   size_t iter_max = 500; // max iterazioni
+   size_t stuck_max = 20; // max iterazioni in cui si può avere sempre lo stesso risultato
+   double toll     = 1e-4;
+   int    num_run  = 50;
 
    TGraphAsymmErrors *chi_trend  = new TGraphAsymmErrors();
    TGraphAsymmErrors *time_trend = new TGraphAsymmErrors();
-   TFile *            file       = TFile::Open("GA_20_0.2_0.6.root", "RECREATE");
+   TFile *            file       = TFile::Open("GA_200_0.1_0.5.root", "RECREATE");
 
-   std::vector<double> x = {10, 20, 40, 60, 80, 100}; // dominio centrato su parametro reale con larghezza +-x %
+   std::vector<double> x = {20,50,80,100}; // dominio centrato su parametro reale con larghezza +-x %
 
    TApplication *app = new TApplication("app", 0, 0);
 
@@ -88,12 +89,12 @@ int main(int argc, char *argv[])
          Population pop(conf);
          pop.init();
 
-         Evaluate::computeCostFit(pop, data, model);
+         Evaluate::computeCostFit(pop, data, model, Ndof);
          pop.sort();
-         chi_run.push_back(pop[0].getCost() / Ndof);
+         chi_run.push_back(pop[0].getCost());
 
          size_t iter  = 0;
-         size_t stack = 0;
+         size_t stuck = 0;
 
          timer->Reset();
          timer->Start();
@@ -101,21 +102,21 @@ int main(int argc, char *argv[])
          do {
             iter++;
             pop.crossover();
-            Evaluate::computeCostFit(pop, data, model);
+            Evaluate::computeCostFit(pop, data, model, Ndof);
             pop.sort();
             pop.mutation();
-            Evaluate::computeCostFit(pop, data, model);
+            Evaluate::computeCostFit(pop, data, model, Ndof);
             pop.sort();
-            chi_run.push_back(pop[0].getCost() / Ndof);
-            if (chi_run[iter] / Ndof - chi_run[iter - 1] / Ndof <
-                toll) // if the result doesn't change significally for 10 times, the algorithm stops
-               stack++;
+            chi_run.push_back(pop[0].getCost());
+            if (abs(chi_run[iter-1] - chi_run[iter]) < toll){ // if the result doesn't change significally for stuck_max times, the algorithm stops
+               stuck++;
+             }
             else
-               stack = 0;
-         } while (stack < 20 & iter < iter_max);
+               stuck = 0;
+         } while (stuck < stuck_max & iter < iter_max);
 
          time_GA.push_back(timer->RealTime());
-         chi_GA.push_back(pop[0].getCost() / Ndof);
+         chi_GA.push_back(pop[0].getCost());
       };
 
       double sum_chi   = 0.;
