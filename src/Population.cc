@@ -16,8 +16,8 @@ void Population::init()
 
    for (size_t i = 0; i < m_chrom.size(); ++i) {
       for (size_t j = 0; j < m_conf.getNumberOfParameters(); ++j) {
-         std::uniform_real_distribution<double> uni(m_conf.getParamaterDomain().getParamaterMin(j),
-                                                    m_conf.getParamaterDomain().getParamaterMax(j));
+         std::uniform_real_distribution<double> uni(m_conf.getParameterDomain().getParameterMin(j),
+                                                    m_conf.getParameterDomain().getParameterMax(j));
          m_chrom[i].setGene(j, uni(rng));
       };
    };
@@ -52,7 +52,7 @@ void Population::crossover()
       int    ma = 0, pa = 0;
       double ra1 = uni(rng);
       for (int u = 1; u < m_conf.getKeep(); u++) { // scelgo la madre
-         if (ra1 > m_conf.getProb(u-1) && ra1 <= m_conf.getProb(u)) ma = u;
+         if (ra1 > m_conf.getProb(u - 1) && ra1 <= m_conf.getProb(u)) ma = u;
       };
       double ra2 = uni(rng);
       for (int u = 1; u < m_conf.getKeep(); u++) { // scelgo il padre
@@ -83,9 +83,20 @@ void Population::mutation()
       std::uniform_int_distribution<int> uni_2(1, m_chrom.size() - 1); // con elitismo
       int                                ra2 = uni_2(rng);
 
-      std::uniform_real_distribution<double> uni_3(m_conf.getParamaterDomain().getParamaterMin(ra1),
-                                                   m_conf.getParamaterDomain().getParamaterMax(ra1));
+      std::uniform_real_distribution<double> uni_3(m_conf.getParameterDomain().getParameterMin(ra1),
+                                                   m_conf.getParameterDomain().getParameterMax(ra1));
       m_chrom[ra2].setGene(ra1, uni_3(rng));
       m_chrom[ra2].setIndicatorDown();
    };
+};
+
+void Population::draw(TH1F *t_data, TF1 *t_model)
+{
+   TApplication *app = new TApplication("app", 0, 0);
+   TCanvas *     c1  = new TCanvas("c1", "", 1500, 500);
+   m_chrom[0].setModelBest(t_model);
+   t_model->Draw("C");
+   t_model->SetTitle("Normalized function and histogram");
+   t_data->Draw("SAME");
+   app->Run();
 };

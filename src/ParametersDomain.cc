@@ -11,12 +11,12 @@ void ParametersDomain::setParameterDomain(size_t i, std::string vname, double vm
    m_par[i].m_max_val = vmax;
 };
 
-double ParametersDomain::getParamaterMin(size_t i)
+double ParametersDomain::getParameterMin(size_t i)
 {
    return m_par[i].m_min_val;
 };
 
-double ParametersDomain::getParamaterMax(size_t i)
+double ParametersDomain::getParameterMax(size_t i)
 {
    return m_par[i].m_max_val;
 };

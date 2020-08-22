@@ -48,7 +48,7 @@ void Chromosome::setCost(double v)
    m_cost = v;
 };
 
-void Chromosome::updateModel(TF1 *f)
+void Chromosome::setModel(TF1 *f)
 {
    for (size_t i = 0; i < m_genes.size(); ++i) {
       f->SetParameter(i, m_genes[i]);
