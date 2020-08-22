@@ -7,6 +7,8 @@
 class Parameter {
 
 public:
+   /// Parameter default constructor <br> <br>
+   /// Parameter stores the name, the minimum and maximum values allowed for a parameter of the model
    Parameter()
    {
       m_name    = "";
@@ -14,31 +16,39 @@ public:
       m_max_val = 0.;
    };
 
-   std::string m_name;
-   double      m_min_val;
-   double      m_max_val;
+   std::string m_name /**Name of the parameter*/;
+   double      m_min_val /**Minimum value allowed for the parameter*/;
+   double      m_max_val /**Maximum value allowed for the parameter*/;
 };
 
 class ParametersDomain {
 public:
+   /// ParametersDomain default constructor
    ParametersDomain();
 
-   ParametersDomain(size_t);
+   /// ParametersDomain constructor for a set of _n_ - parameters
+   ParametersDomain(size_t n);
 
-   void setParameterDomain(size_t, std::string, double, double);
+   /// Set the _t_ - parameter assigning the name and the domain extreme values
+   void setParameterDomain(size_t t, std::string, double, double);
 
-   size_t setNumberOfParameters() const;
-
+   /// Return the number of parameters <br> <br>
+   /// Referenced by Config::getNumberOfParameters()
    size_t getNumberOfParameters() const;
 
-   double getParamaterMin(size_t i);
+   /// Return the minimum value allowed for the _t_ - parameter <br> <br>
+   /// Referenced by Population::init(), Population::mutation()
+   double getParameterMin(size_t t);
 
-   double getParamaterMax(size_t i);
+   /// Return the maximum value allowed for the _t_ - parameter <br> <br>
+   /// Referenced by Population::init(), Population::mutation()
+   double getParameterMax(size_t t);
 
-   Parameter &operator[](size_t i) { return m_par[i]; };
+   /// Return the _t_ - parameter
+   Parameter &operator[](size_t t) { return m_par[t]; };
 
 private:
-   std::vector<Parameter> m_par;
+   std::vector<Parameter> m_par; /**< Vector of parameters */
 };
 
 #endif

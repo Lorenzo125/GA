@@ -5,29 +5,32 @@
 
 class Evaluate {
 public:
-   static void computeCostFit(Chromosome &chr, TH1F *data, TF1 *model, double Ndof)
+   /// Compute the chi2/Ndof using genes of chromosome as fitting parameters  <br> <br>
+   /// The chi2/Ndof is assigned to chromosomes as cost to be minimized
+   static void computeCostFit(Chromosome &t_chr, TH1F *t_data, TF1 *t_model, double t_Ndof)
    {
       double chi2 = 0., x = 0., y = 0., c = 0., e = 0.;
-      if (chr.getIndicator() == 0) {
-        TAxis *xAxis = data->GetXaxis();
-        chr.updateModel(model);
-        chi2 = 0.;
-         for (size_t m = 1; m <= data->GetNbinsX(); m++) {
+      if (t_chr.getIndicator() == 0) {
+         TAxis *xAxis = t_data->GetXaxis();
+         t_chr.setModel(t_model);
+         chi2 = 0.;
+         for (size_t m = 1; m <= t_data->GetNbinsX(); m++) {
             x = xAxis->GetBinCenter(m);
-            c = data->GetBinContent(m);
-            e = data->GetBinError(m);
+            c = t_data->GetBinContent(m);
+            e = t_data->GetBinError(m);
             if (e == 0) continue;
-            chi2 += TMath::Power((c - model->Eval(x)) / e, 2);
+            chi2 += TMath::Power((c - t_model->Eval(x)) / e, 2);
          };
-      chr.setCost(chi2/Ndof);
-      chr.setIndicatorUp();
+         t_chr.setCost(chi2 / t_Ndof);
+         t_chr.setIndicatorUp();
       };
    };
 
-   static void computeCostFit(Population &pop, TH1F *data, TF1 *model, double Ndof)
+   /// Compute the chi2/Ndof  for each chromosome in the population <br> <br>
+   static void computeCostFit(Population &t_pop, TH1F *t_data, TF1 *t_model, double t_Ndof)
    {
       for (size_t i = 0; i < pop.size(); ++i) {
-         computeCostFit(pop[i], data, model, Ndof);
+         computeCostFit(pop[i], t_data, t_model, t_Ndof);
       };
    };
 };
