@@ -45,17 +45,19 @@ void Population::crossover()
    std::mt19937                           rng(rd());
    std::uniform_real_distribution<double> uni(0.0, 1.0);
 
-   // genero i figli
+   // generate offspring
    for (int i = 0; i < (m_chrom.size() - m_conf.getKeep()); i = i + 2) {
       m_chrom[m_chrom.size() - 1 - i].setIndicatorDown();
       m_chrom[m_chrom.size() - 2 - i].setIndicatorDown();
       int    ma = 0, pa = 0;
       double ra1 = uni(rng);
-      for (int u = 1; u < m_conf.getKeep(); u++) { // scelgo la madre
+      // mother
+      for (int u = 1; u < m_conf.getKeep(); u++) {
          if (ra1 > m_conf.getProb(u - 1) && ra1 <= m_conf.getProb(u)) ma = u;
       };
       double ra2 = uni(rng);
-      for (int u = 1; u < m_conf.getKeep(); u++) { // scelgo il padre
+      // father
+      for (int u = 1; u < m_conf.getKeep(); u++) {
          if (ra2 > m_conf.getProb(u - 1) && ra2 <= m_conf.getProb(u)) pa = u;
       };
       for (int u = 0; u < m_conf.getNumberOfParameters(); u++) {
@@ -80,7 +82,7 @@ void Population::mutation()
       std::uniform_int_distribution<int> uni_1(0, m_conf.getNumberOfParameters() - 1);
       int                                ra1 = uni_1(rng);
 
-      std::uniform_int_distribution<int> uni_2(1, m_chrom.size() - 1); // con elitismo
+      std::uniform_int_distribution<int> uni_2(1, m_chrom.size() - 1); //elitism
       int                                ra2 = uni_2(rng);
 
       std::uniform_real_distribution<double> uni_3(m_conf.getParameterDomain().getParameterMin(ra1),
