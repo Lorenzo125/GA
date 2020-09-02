@@ -28,8 +28,7 @@ int main(int argc, char *argv[])
    TH1F * aux = (TH1F *)f->Get("data");
    //
 
-   // clone the initial data in order to normalize the histogram and use
-   // it without working on the original dataset
+   // clone the initial data in order to normalize the histogram
    TH1F *data = (TH1F *)aux->Clone();
    if (data->GetSumw2N() == 0) data->Sumw2(kTRUE);
    data->Scale(1 / (data->GetEntries() * data->GetBinWidth(1)));
